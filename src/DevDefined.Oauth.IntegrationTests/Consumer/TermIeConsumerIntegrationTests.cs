@@ -53,7 +53,8 @@ namespace DevDefined.Oauth.IntegrationTests.Consumer
 
       return new OAuthSession(consumerContext, "http://term.ie/oauth/example/request_token.php",
                               "http://localhost/authorize",
-                              "http://term.ie/oauth/example/access_token.php");
+                              "http://term.ie/oauth/example/access_token.php",
+							  null);
     }
 
     [Fact]

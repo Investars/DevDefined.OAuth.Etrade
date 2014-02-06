@@ -51,7 +51,7 @@ namespace DevDefined.OAuth.Tests.Consumer
 		{
 			var consumerContext = new OAuthConsumerContext {ConsumerKey = "key"};
 
-			var session = new OAuthSession(consumerContext, "http://localhost/request", "http://localhost/userauth", "http://localhost/access");
+			var session = new OAuthSession(consumerContext, "http://localhost/request", "http://localhost/userauth", "http://localhost/access", null);
 
 			RequestDescription description = session.BuildRequestTokenContext("POST").GetRequestDescription();
 
@@ -64,7 +64,8 @@ namespace DevDefined.OAuth.Tests.Consumer
 			var consumerContext = new OAuthConsumerContext {ConsumerKey = "key"};
 
 			var session = new OAuthSession(consumerContext, "http://localhost/request",
-			                               "http://localhost/userauth", "http://localhost/access");
+			                               "http://localhost/userauth", "http://localhost/access",
+										   null);
 
 			RequestDescription description = session.BuildRequestTokenContext("GET").GetRequestDescription();
 
@@ -77,7 +78,8 @@ namespace DevDefined.OAuth.Tests.Consumer
 		public void GetUserAuthorizationUriForTokenWithCallback()
 		{
 			var session = new OAuthSession(new OAuthConsumerContext(), "http://localhost/request",
-			                               "http://localhost/userauth", "http://localhost/access");
+			                               "http://localhost/userauth", "http://localhost/access",
+										   null);
 			string actual = session.GetUserAuthorizationUrlForToken(new TokenBase {Token = "token"},
 			                                                        "http://localhost/callback");
 			Assert.Equal(
@@ -88,7 +90,8 @@ namespace DevDefined.OAuth.Tests.Consumer
 		public void GetUserAuthorizationUriForTokenWithoutCallback()
 		{
 			var session = new OAuthSession(new OAuthConsumerContext(), "http://localhost/request",
-			                               "http://localhost/userauth", "http://localhost/access");
+			                               "http://localhost/userauth", "http://localhost/access",
+										   null);
 			string actual = session.GetUserAuthorizationUrlForToken(new TokenBase {Token = "token"}, null);
 			Assert.Equal("http://localhost/userauth?oauth_token=token", actual);
 		}
@@ -97,7 +100,7 @@ namespace DevDefined.OAuth.Tests.Consumer
 		public void TokenSecretNotIncludedInAuthorizationHeaderForPostRequestWithUseAuthorizationHeaders()
 		{
 			var session = new OAuthSession(new OAuthConsumerContext {ConsumerKey = "consumer", UseHeaderForOAuthParameters = true}, "http://localhost/request",
-			                               "http://localhost/userauth", "http://localhost/access");
+			                               "http://localhost/userauth", "http://localhost/access", null);
 
 			var accessToken = new TokenBase {ConsumerKey = "consumer", Token = "token", TokenSecret = "secret"};
 
@@ -115,7 +118,7 @@ namespace DevDefined.OAuth.Tests.Consumer
 		public void TokenSecretNotIncludedInBodyParametersForPostRequest()
 		{
 			var session = new OAuthSession(new OAuthConsumerContext {ConsumerKey = "consumer"}, "http://localhost/request",
-			                               "http://localhost/userauth", "http://localhost/access");
+			                               "http://localhost/userauth", "http://localhost/access", null);
 
 			var accessToken = new TokenBase {ConsumerKey = "consumer", Token = "token", TokenSecret = "secret"};
 
@@ -133,7 +136,7 @@ namespace DevDefined.OAuth.Tests.Consumer
 		public void TokenSecretNotIncludedInQueryParametersForGetRequest()
 		{
 			var session = new OAuthSession(new OAuthConsumerContext {ConsumerKey = "consumer"}, "http://localhost/request",
-			                               "http://localhost/userauth", "http://localhost/access");
+			                               "http://localhost/userauth", "http://localhost/access", null);
 
 			var accessToken = new TokenBase {ConsumerKey = "consumer", Token = "token", TokenSecret = "secret"};
 
@@ -151,7 +154,7 @@ namespace DevDefined.OAuth.Tests.Consumer
 		public void generate_request_with_raw_body_includes_body_hash()
 		{
 			var session = new OAuthSession(new OAuthConsumerContext {ConsumerKey = "consumer", UseHeaderForOAuthParameters = true}, "http://localhost/request", "http://localhost/userauth",
-			                               "http://localhost/access");
+			                               "http://localhost/access", null);
 
 			var accessToken = new TokenBase {ConsumerKey = "consumer", Token = "token", TokenSecret = "secret"};
 

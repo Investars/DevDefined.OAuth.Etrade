@@ -64,7 +64,8 @@ namespace DevDefined.OAuth.Tests.Provider
 
 			var session = new OAuthSession(consumerContext, "http://localhost/oauth/requesttoken.rails",
 			                               "http://localhost/oauth/userauhtorize.rails",
-			                               "http://localhost/oauth/accesstoken.rails");
+			                               "http://localhost/oauth/accesstoken.rails",
+										   null);
 
 			return session;
 		}

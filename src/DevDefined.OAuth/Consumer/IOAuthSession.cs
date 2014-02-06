@@ -45,10 +45,12 @@ namespace DevDefined.OAuth.Consumer
 		IToken ExchangeRequestTokenForAccessToken(IToken requestToken);
 		IToken ExchangeRequestTokenForAccessToken(IToken requestToken, string verificationCode);
 		IToken ExchangeRequestTokenForAccessToken(IToken requestToken, string method, string verificationCode);
+		bool RenewAccessToken(IToken accessToken);
     IToken GetAccessTokenUsingXAuth(string authMode, string username, string password);
     IConsumerRequest BuildRequestTokenContext(string method);
 		IConsumerRequest BuildExchangeRequestTokenForAccessTokenContext(IToken requestToken, string method, string verificationCode);
     IConsumerRequest BuildAccessTokenContext(string method, string xAuthMode, string xAuthUsername, string xAuthPassword);
+		IConsumerRequest BuildRenewAccessTokenContext(IToken accessToken, string method);
     string GetUserAuthorizationUrlForToken(IToken token, string callbackUrl);
 		string GetUserAuthorizationUrlForToken(IToken token);
 		IOAuthSession WithFormParameters(IDictionary dictionary);
