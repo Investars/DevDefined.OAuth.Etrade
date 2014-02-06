@@ -40,6 +40,7 @@ namespace DevDefined.OAuth.Consumer
 		/// <param name="requestContext"></param>
 		/// <param name="webEx"></param>
 		/// <param name="authException"></param>
+		/// <param name="responseBodyAction"></param>
 		/// <returns><c>true</c>, if the authException should be throw, <c>false</c> if the original web exception should be thrown</returns>
 		public static bool TryWrapException(IOAuthContext requestContext, WebException webEx, out OAuthException authException, Action<string> responseBodyAction)
 		{
