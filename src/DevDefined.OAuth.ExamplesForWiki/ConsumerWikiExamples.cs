@@ -29,7 +29,7 @@ namespace DevDefined.OAuth.ExamplesForWiki
 				Key = certificate.PrivateKey
 			};
 
-			var session = new OAuthSession(consumerContext, requestUrl, userAuthorizeUrl, accessUrl)
+			var session = new OAuthSession(consumerContext, requestUrl, userAuthorizeUrl, accessUrl, null)
 				.WithQueryParameters(new { scope = "http://www.google.com/m8/feeds" });
 
 			// get a request token from the provider

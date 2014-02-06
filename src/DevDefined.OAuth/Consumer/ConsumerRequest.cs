@@ -123,11 +123,14 @@ namespace DevDefined.OAuth.Consumer
 			return description;
 		}
 
-		public HttpWebResponse ToWebResponse()
+		public HttpWebResponse ToWebResponse(string accept = null)
 		{
 			try
 			{
 				HttpWebRequest request = ToWebRequest();
+
+				request.Accept = accept;
+
 				return (HttpWebResponse) request.GetResponse();
 			}
 			catch (WebException webEx)

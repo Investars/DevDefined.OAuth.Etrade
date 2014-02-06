@@ -43,30 +43,31 @@ namespace DevDefined.OAuth.Consumer
 		IConsumerRequestFactory _consumerRequestFactory = DefaultConsumerRequestFactory.Instance;
 
 		public OAuthSession(IOAuthConsumerContext consumerContext, Uri requestTokenUri, Uri userAuthorizeUri,
-		                    Uri accessTokenUri)
-			: this(consumerContext, requestTokenUri, userAuthorizeUri, accessTokenUri, null)
+							Uri accessTokenUri, Uri renewAccessTokenUri)
+			: this(consumerContext, requestTokenUri, userAuthorizeUri, accessTokenUri, renewAccessTokenUri, null)
 		{
 		}
 
 		public OAuthSession(IOAuthConsumerContext consumerContext, Uri requestTokenUri, Uri userAuthorizeUri,
-		                    Uri accessTokenUri, Uri callBackUri)
+							Uri accessTokenUri, Uri renewAccessTokenUri, Uri callBackUri)
 		{
 			ConsumerContext = consumerContext;
 			RequestTokenUri = requestTokenUri;
 			AccessTokenUri = accessTokenUri;
+			RenewAccessTokenUri = renewAccessTokenUri;
 			UserAuthorizeUri = userAuthorizeUri;
 			CallbackUri = callBackUri;
 		}
 
 		public OAuthSession(IOAuthConsumerContext consumerContext, string requestTokenUrl, string userAuthorizeUrl,
-		                    string accessTokenUrl, string callBackUrl)
-			: this(consumerContext, new Uri(requestTokenUrl), new Uri(userAuthorizeUrl), new Uri(accessTokenUrl), ParseCallbackUri(callBackUrl))
+		                    string accessTokenUrl, string renewAccessTokenUri, string callBackUrl)
+			: this(consumerContext, new Uri(requestTokenUrl), new Uri(userAuthorizeUrl), new Uri(accessTokenUrl), new Uri(renewAccessTokenUri), ParseCallbackUri(callBackUrl))
 		{
 		}
 
 		public OAuthSession(IOAuthConsumerContext consumerContext, string requestTokenUrl, string userAuthorizeUrl,
-		                    string accessTokenUrl)
-			: this(consumerContext, requestTokenUrl, userAuthorizeUrl, accessTokenUrl, null)
+							string accessTokenUrl, string renewAccessTokenUri)
+			: this(consumerContext, requestTokenUrl, userAuthorizeUrl, accessTokenUrl, renewAccessTokenUri, null)
 		{
 		}
 
@@ -89,6 +90,7 @@ namespace DevDefined.OAuth.Consumer
 		public IOAuthConsumerContext ConsumerContext { get; set; }
 		public Uri RequestTokenUri { get; set; }
 		public Uri AccessTokenUri { get; set; }
+		public Uri RenewAccessTokenUri { get; set; }
 		public Uri UserAuthorizeUri { get; set; }
 		public Uri ProxyServerUri { get; set; }
 		public IToken AccessToken { get; set; }
@@ -202,7 +204,12 @@ namespace DevDefined.OAuth.Consumer
         .SignWithoutToken();
     }
 
-	  public string GetUserAuthorizationUrlForToken(IToken token)
+		public string GetUserAuthorizationUrlForToken(IToken token, string callbackUrl)
+		{
+			throw new NotImplementedException();
+		}
+
+		public string GetUserAuthorizationUrlForToken(IToken token)
 		{
 			return GetUserAuthorizationUrlForToken(null, token);
 		}
@@ -296,6 +303,18 @@ namespace DevDefined.OAuth.Consumer
 			return token;
 		}
 
+		public bool RenewAccessToken(IToken accessToken)
+		{
+			var request = BuildRenewAccessTokenContext(accessToken, "GET").ToString();
+
+			if (request.ToLower() == "access token has been renewed")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
 		public IConsumerRequest BuildRenewAccessTokenContext(IToken requestToken, string method, string sessionHandle)
 		{
 			return Request()
@@ -303,6 +322,14 @@ namespace DevDefined.OAuth.Consumer
 				.AlterContext(context => context.SessionHandle = sessionHandle)
 				.ForUri(AccessTokenUri)
 				.SignWithToken(requestToken);
+		}
+
+		public IConsumerRequest BuildRenewAccessTokenContext(IToken accessToken, string method)
+		{
+			return Request()
+				.ForMethod(method)
+				.ForUri(RenewAccessTokenUri)
+				.SignWithToken(accessToken);
 		}
 
 		public IToken GetRequestToken(string method)
