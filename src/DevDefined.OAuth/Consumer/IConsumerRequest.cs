@@ -42,7 +42,7 @@ namespace DevDefined.OAuth.Consumer
 		string RequestBody { get; set; }
 		XDocument ToDocument();
 		byte[] ToBytes();
-		HttpWebResponse ToWebResponse();
+		HttpWebResponse ToWebResponse(string accept = null);
 		NameValueCollection ToBodyParameters();
 		RequestDescription GetRequestDescription();
 		IConsumerRequest SignWithoutToken();
